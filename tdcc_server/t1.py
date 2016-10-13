@@ -1,5 +1,5 @@
 import requests
-url="http://wsf.cdyne.com/WeatherWS/Weather.asmx?WSDL"
+url="http://localhost:5000/xml"
 #headers = {'content-type': 'application/soap+xml'}
 headers = {'content-type': 'text/xml'}
 body = """<?xml version="1.0" encoding="UTF-8"?>
