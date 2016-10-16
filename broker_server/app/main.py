@@ -5,6 +5,7 @@
 import re
 import uuid
 
+import requests
 from flask import Flask
 from flask import request
 import base64
@@ -79,6 +80,9 @@ def file_in_place():
 # 但fsr回傳訊息較簡單不需處理，STP則需另外處理
 @app.route('/stp', methods=['GET','POST'])
 def straight_through_processing():
+    url = "http://localhost:5100/fip"
+    # headers = {'content-type': 'application/soap+xml'}
+    headers = {'content-type': 'text/xml'}
     data = request.data
     soap_header = '''<?xml version="1.0" ?> 
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -98,9 +102,13 @@ def straight_through_processing():
         soap_body = soap_body + ET.tostring(e)
 
     rquid = uuid.uuid1()
+    stp_body = soap_header + soap_body.format(MsgName, rquid) + soap_tailor 
+    print stp_body
+    # response = requests.post(url, data=stp_body, headers=headers)
 
-    print soap_header + soap_body.format(MsgName, rquid) + soap_tailor 
-    return 'stp send request'
+    # 模擬TDCC 回覆訊息
+
+    return 'OK'
 
 
 # 收檔自動化到位測試，之後刪除
