@@ -2,7 +2,7 @@ import requests
 import json
 
 
-url = "http://localhost:5100/fsr"
+url = "http://localhost:5100/stp"
 #<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 #xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 #xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -27,16 +27,22 @@ url = "http://localhost:5100/fsr"
 #body = soap_header + soap_body + soap_tailor
 
 data = {}
-data['autoftpfun'] = '167F_FTP'
-data['TxCod'] = '167'
+data['TxCod'] = '127'
 data['BrkCod'] = '7000'
-data['BrokerNoLen'] = '04'
-data['BrokerNo'] = '7000'
-data['TakeBorrowDateLen'] = '07'
-data['TakeBorrowDate'] = '20161010'
-data['Option1Len'] = '01'
-data['Option1'] = '1'
-data['FileNo'] = '00001'
+data['ExeBrkCod'] = '7000'
+data['AccountNoLen'] = '0B'
+data['AccountNo'] = '70001234567'
+data['StockNoLen'] = '06'
+data['StockNo'] = '2303  '
+data['StkShrLen'] = '0F'
+data['StkShr'] = '1234567890123.12'
+data['IdNoLen'] = '0A'
+data['IdNo'] = 'F123456789'
+data['RepNoLen'] = '01'
+data['YesNoLen'] = '01'
+data['YesNo'] = 'N'
+data['TelNoLen'] = '0A'
+data['TelNo'] = '0233933009'
 
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 response = requests.post(url, data=json.dumps(data))
