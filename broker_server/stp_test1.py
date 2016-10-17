@@ -2,7 +2,9 @@ import requests
 import json
 
 
-url = "http://localhost:5100/stp"
+#url = "http://localhost:5100/stp"
+stp_url = "http://localhost:5100/stp/MsgHandler.asmx"
+fpc_url = "http://localhost:5100/fpc/MsgHandler.asmx"
 #<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 #xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 #xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
