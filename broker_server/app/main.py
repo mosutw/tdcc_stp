@@ -32,6 +32,8 @@ def welcome_mega():
 # @app.route('/fsr/<request_data>')
 @app.route('/fsr', methods = ['POST'])
 def file_send_request():
+    url = "http://localhost:5200/fpc/MsgHandler.asmx"
+    headers = {'content-type': 'text/xml'}
     data = request.data
     soap_header = '''<?xml version="1.0" ?>
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -49,9 +51,10 @@ def file_send_request():
         soap_body = soap_body + ET.tostring(e)
 
     rquid = uuid.uuid1()
-
-    print soap_header + soap_body.format(rquid) + soap_tailor 
-    return 'file send request'
+    fpc_body = soap_header + soap_body.format(rquid) + soap_tailor
+    response = requests.post(url, data=fpc_body, headers=headers)
+    #print soap_header + soap_body.format(rquid) + soap_tailor
+    return response.content
 
 # 收檔自動化到位通知服務
 @app.route('/fip', methods=['POST'])
@@ -80,13 +83,13 @@ def file_in_place():
 # 但fsr回傳訊息較簡單不需處理，STP則需另外處理
 @app.route('/stp', methods=['GET','POST'])
 def straight_through_processing():
-    url = "http://localhost:5100/fip"
+    url = "http://localhost:5200/stp/MsgHandler.asmx"
     # headers = {'content-type': 'application/soap+xml'}
     headers = {'content-type': 'text/xml'}
     data = request.data
-    soap_header = '''<?xml version="1.0" ?> 
-    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    soap_header = '''<?xml version="1.0" ?>
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
          <SubmitXmlSync xmlns="http://www.cedar.com.tw/bluestar/">'''
@@ -97,18 +100,19 @@ def straight_through_processing():
     json_data['data'] = json.loads(data)
     xml_root = ET.fromstring(xmltodict.unparse(json_data))
     for e in xml_root:
-	if e.tag == "TxCod":
-		MsgName = e.text
+        if e.tag == "TxCod":
+            MsgName = e.text
         soap_body = soap_body + ET.tostring(e)
 
     rquid = uuid.uuid1()
-    stp_body = soap_header + soap_body.format(MsgName, rquid) + soap_tailor 
-    print stp_body
-    # response = requests.post(url, data=stp_body, headers=headers)
+    stp_body = soap_header + soap_body.format(MsgName, rquid) + soap_tailor
+    # print stp_body
+    response = requests.post(url, data=stp_body, headers=headers)
 
     # 模擬TDCC 回覆訊息
 
-    return 'OK'
+    print response.content
+    return response.content
 
 
 # 收檔自動化到位測試，之後刪除

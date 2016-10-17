@@ -1,0 +1,25 @@
+[setting]
+#設定主機PORT
+# host=0.0.0.0
+port=5100
+
+[log_info]
+log_path=./log
+
+#設定stp 服務網址
+[stp_server]
+stp_uri = http://localhost:5100/stp/MsgHandler.asmx
+# 設定資料回傳後回呼程式
+callback=
+
+#設定fpc 服務網址
+[fpc_server]
+fpc_uri = http://localhost:5100/fpc/MsgHandler.asmx
+
+# 設定FTP主機
+[ftp]
+server=0.0.0.0
+port=21
+file_path=/
+user=b4000
+password="bC0zMzIyNzYzNA=="
